@@ -3,6 +3,7 @@ package com.example.gadsnotekeeperapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import com.example.gadsnotekeeperapp.databinding.ActivityMainBinding
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -37,6 +38,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun displayNote() {
         val note = DataManager.notes[notePosition]
         val noteTitle : EditText = findViewById(R.id.noteText)
@@ -56,5 +59,35 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.custom_menu, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_menu_divider -> true
+            R.id.action_next ->  {
+                moveNext()
+                true
+            }
+
+            else ->  super.onOptionsItemSelected(item)
+        }
+    }
+
+
+    private fun moveNext() {
+        ++notePosition
+        displayNote()
+        invalidateOptionsMenu()
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        if (notePosition >= DataManager.notes.lastIndex){
+            val menuItem = menu?.findItem(R.id.action_next)
+            if (menuItem != null){
+                menuItem.icon = getDrawable(R.drawable.ic_block_white_24)
+                menuItem.isEnabled = false
+            }
+        }
+        return super.onPrepareOptionsMenu(menu)
     }
 }
