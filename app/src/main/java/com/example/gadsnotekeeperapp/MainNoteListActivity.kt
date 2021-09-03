@@ -20,24 +20,30 @@ class MainNoteListActivity : AppCompatActivity() {
         setContentView(binding.root)
         setContentView(R.layout.activity_main_note_list)
 
-//        var fab = findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        var fab = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         var listView: ListView = findViewById(R.id.listView)
         listView.adapter =  ArrayAdapter(this,android.R.layout.simple_list_item_1,DataManager.notes)
 
 
 
-//        fab.setOnClickListener{ view ->
-//            val activityIntent = Intent(this,MainActivity::class.java)
-//            startActivity(activityIntent)
-//        }
+        fab.setOnClickListener{ view ->
+            val activityIntent = Intent(this,MainActivity::class.java)
+            startActivity(activityIntent)
+        }
 
         listView.setOnItemClickListener{ parent, view,position,id ->
             val activityIntent = Intent(this,MainActivity::class.java)
             activityIntent.putExtra(NOTE_POSITION,position)
             startActivity(activityIntent)
         }
+
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        var listNote = findViewById<ListView>(R.id.listView)
+        (listNote.adapter as ArrayAdapter<NoteInfo>).notifyDataSetChanged()
 
-
+    }
 }

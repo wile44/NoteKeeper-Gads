@@ -8,6 +8,7 @@ import com.example.gadsnotekeeperapp.databinding.ActivityMainBinding
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 
 
 class MainActivity : AppCompatActivity() {
@@ -89,5 +90,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        saveNote()
+    }
+
+    private fun saveNote() {
+        val note = DataManager.notes[notePosition]
+        val noteText : EditText= findViewById(R.id.noteText)
+        val noteTitle : EditText = findViewById(R.id.noteTitle)
+        val spinnerCourse : Spinner = findViewById(R.id.spinnerCourse)
+
+        note.title = noteTitle.text.toString()
+        note.text = noteText.text.toString()
+
+
+        note.course = spinnerCourse.selectedItem as CourseInfo
     }
 }
